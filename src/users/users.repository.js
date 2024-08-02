@@ -1,4 +1,5 @@
 import { db } from "../../db.js"
+import { NotFoundError } from "./../errors/models/not-fount-error.model.js"
 
 export const findAll = () => {
 	return new Promise((resolve, reject) => {
@@ -21,7 +22,26 @@ export const findById = (id) => {
 			}
 
 			if (!row) {
-				reject("User is not found")
+				// reject("User is not found")
+				reject(new NotFoundError("User is not found"))
+			}
+
+			resolve(row)
+		})
+	})
+}
+
+export const findByLogin = (login) => {
+	return new Promise((resolve, reject) => {
+		db.get(`SELECT * FROM users WHERE login =${login}`, (err, row) => {
+			if (err) {
+				reject(err.message)
+				return
+			}
+
+			if (!row) {
+				// reject("User is not found")
+				reject(new NotFoundError("User is not found"))
 			}
 
 			resolve(row)

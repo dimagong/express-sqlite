@@ -7,25 +7,26 @@ import * as usersService from "./user.service.js"
 // 	},
 // ]
 
-export const findAll = async (req, res) => {
+export const findAll = async (req, res, next) => {
 	// return res.json(USERS)
 	try {
 		const users = await usersService.getAllUsers()
 		return res.json(users)
 	} catch (error) {
-		return res.status(500).send(error)
+		//return res.status(500).send(error)
+		return next(error)
 	}
-	return
 }
 
-export const findById = async (req, res) => {
+export const findById = async (req, res, next) => {
 	const userId = req.params.id
 
 	try {
 		const user = await usersService.getUserById(userId)
 		return res.json(user)
 	} catch (error) {
-		return res.status(500).send(error)
+		// return res.status(500).send(error)
+		return next(error)
 	}
 
 	// const user = USERS.find((user) => user.login === login)
@@ -38,13 +39,14 @@ export const findById = async (req, res) => {
 	// return res.json(user)
 }
 
-export const create = async (req, res) => {
+export const create = async (req, res, next) => {
 	const userBody = req.body
 	try {
 		const user = await usersService.create(userBody)
 		return res.json(user)
 	} catch (error) {
-		return res.status(500).send(error)
+		// return res.status(500).send(error)
+		return next(error)
 	}
 
 	// USERS.push({
@@ -54,14 +56,15 @@ export const create = async (req, res) => {
 	// return res.json(USERS[USERS.length - 1])
 }
 
-export const update = async (req, res) => {
+export const update = async (req, res, next) => {
 	const userId = req.params.id
 	const userBody = req.body
 	try {
 		const user = await usersService.update(userId, userBody)
 		return res.json(user)
 	} catch (error) {
-		return res.status(500).send(error)
+		// return res.status(500).send(error)
+		return next(error)
 	}
 
 	// const userId = USERS.findIndex((user) => user.login === login)
@@ -79,14 +82,15 @@ export const update = async (req, res) => {
 	// return res.json(USERS[userId])
 }
 
-export const remove = async (req, res) => {
+export const remove = async (req, res, next) => {
 	const userId = req.params.id
 
 	try {
 		const user = await usersService.remove(userId)
 		return res.json(user)
 	} catch (error) {
-		return res.status(500).send(error)
+		// return res.status(500).send(error)
+		return next(error)
 	}
 	// const login = req.params.login
 
