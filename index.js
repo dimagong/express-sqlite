@@ -6,8 +6,13 @@ import { errorLogger } from "./src/errors/middlewares/error-logger.middleware.js
 import { authenticated } from "./src/authentication/middlewares/authenticated.middleware.js"
 import * as authenticationController from "./src/authentication/middlewares/authentication.controller.js"
 import { hasRole } from "./src/authorization/middlewares/has-role.middleware.js"
+import { publicPort, sessionSecretKey } from "./config.js"
+import cookieParser from "cookie-parser"
+import session from "express-session"
+import MongoStore from "connect-mongo"
 
-const PORT = 3000
+const PORT = publicPort
+const SESSION_SECRET_KEY = sessionSecretKey
 
 const app = express()
 
@@ -21,6 +26,24 @@ app.use((req, res, next) => {
 app.use("/media", express.static("public"))
 
 app.use(express.json())
+
+app.use(cookieParser())
+
+const sessionStore = MongoStore({
+	mongoUrl: "mongodb://localhost/your-database",
+	collectionName: "sessions",
+	ttl: 60 * 60, //14 * 24 * 60 * 60 // = 14 days. Default
+})
+
+app.use(
+	session({
+		secret: SESSION_SECRET_KEY,
+		resave: false,
+		saveUninitialized: true,
+		cookie: { secure: false },
+		store: sessionStore,
+	})
+)
 
 app.get("/", (req, res) => {
 	res.render("pages/index", { data: "here is some data" })

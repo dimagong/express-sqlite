@@ -6,7 +6,15 @@ import { NotAuthorizedError } from "./../../errors/models/not-authorized-error.m
 
 export const authenticated = (req, res, next) => {
 	try {
-		const { token } = req.body
+		//=====with token passed from body
+		// const { token } = req.body
+
+		//=====with cookie
+		// const token = req.cookies.token
+
+		//=====with session
+		const token = req.session.token
+
 		jsonwebtoken.verify(token, webTokenSecretKey)
 		return next()
 	} catch (error) {

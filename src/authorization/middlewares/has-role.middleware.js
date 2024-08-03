@@ -15,10 +15,17 @@ export const hasRole = (requiredRole) => {
 
 	return async (req, res, next) => {
 		try {
-			const { token } = req.body
+			//=====with token passed from body
+			// const { token } = req.body
 
-			const decoded = jsonwebtoken.verify(token, webTokenSecretKey)
-			const userRole = await getRoleByUserId(decoded.id)
+			//=====with cookie
+			// const token = req.cookies.token
+			// const decoded = jsonwebtoken.verify(token, webTokenSecretKey)
+			// const userRole = await getRoleByUserId(decoded.id)
+
+			//=====with session
+			const userRole = req.session.role
+
 			const userPermissionLevel = rolePermissions[userRole] || 0
 
 			if (userPermissionLevel < requiredRolePermission) {
