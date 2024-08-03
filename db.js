@@ -17,11 +17,14 @@ export const db = new sqlite3.Database(dbPath, (er) => {
 })
 
 export const initDb = () => {
-	db.run("CREATE TABLE users (id INTEGER PRIMARY KEY, login TEXT UNIQUE, role TEXT);", (error) => {
-		if (error) {
-			console.log("Error innit DB", error)
-			return
+	db.run(
+		"CREATE TABLE users (id INTEGER PRIMARY KEY, login TEXT, role TEXT, password TEXT UNIQUE);",
+		(error) => {
+			if (error) {
+				console.log("Error innit DB", error)
+				return
+			}
+			console.log("DB test data was successfully initialized ")
 		}
-		console.log("DB test data was successfully initialized ")
-	})
+	)
 }

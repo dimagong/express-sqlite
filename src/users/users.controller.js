@@ -39,6 +39,19 @@ export const findById = async (req, res, next) => {
 	// return res.json(user)
 }
 
+export const findByLogin = async (req, res, next) => {
+	const userLogin = req.params.login
+
+	console.log("findByLogin====userLogin", userLogin)
+	try {
+		const user = await usersService.getUserByLogin(userLogin)
+		return res.json(user)
+	} catch (error) {
+		// return res.status(500).send(error)
+		return next(error)
+	}
+}
+
 export const create = async (req, res, next) => {
 	const userBody = req.body
 	try {

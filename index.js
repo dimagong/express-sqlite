@@ -1,8 +1,17 @@
 import express from "express"
-import { findAll, findById, create, remove, update } from "./src/users/users.controller.js"
+import {
+	findAll,
+	findById,
+	create,
+	remove,
+	update,
+	findByLogin,
+} from "./src/users/users.controller.js"
 
 import { standardErrorResponser } from "./src/errors/middlewares/standard-error-responser.middleware.js"
 import { errorLogger } from "./src/errors/middlewares/error-logger.middleware.js"
+
+import * as authenticationController from "./src/authentication/middlewares/authentication.controller.js"
 
 const PORT = 3000
 
@@ -23,8 +32,12 @@ app.get("/", (req, res) => {
 	res.render("pages/index", { data: "here is some data" })
 })
 
+app.post("/signin", authenticationController.signIn)
+app.post("/signup", authenticationController.signUp)
+
 app.get("/users", findAll)
 app.get("/users/:id", findById)
+app.get("/users/login/:login", findByLogin)
 app.post("/users", create)
 app.put("/users/:id", update)
 app.delete("/users/:id", remove)
