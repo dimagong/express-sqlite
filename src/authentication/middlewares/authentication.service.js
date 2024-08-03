@@ -31,6 +31,7 @@ export const registerNewUser = async (login, password) => {
 	const newUser = await userService.create({
 		login: login,
 		role: "limited_user",
+		// role: "limited_user",
 		password: passwordHash,
 	})
 

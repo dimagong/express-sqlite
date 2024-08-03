@@ -9,6 +9,16 @@ export const getUserById = (id) => {
 	return userRepository.findById(id)
 }
 
+export const getRoleByUserId = async (id) => {
+	try {
+		const user = await userRepository.findById(id)
+		return user.role
+	} catch (error) {
+		// return res.status(500).send(error)
+		return next(error)
+	}
+}
+
 export const getUserByLogin = async (login) => {
 	try {
 		const existUser = await userRepository.findByLogin(login)
